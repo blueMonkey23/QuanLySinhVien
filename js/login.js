@@ -12,10 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     //Hàm xử lý logic đăng nhập
     function handleLogin() {
-        //Xóa mọi lỗi cũ
         resetErrors();
-        
-        //Lấy giá trị từ input
         const emailVal = email.value.trim();
         const passwordVal = password.value.trim();
         let isValid = true;
@@ -53,13 +50,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             } else {
                 //ĐĂNG NHẬP THẤT BẠI
+                setError(email,'');
                 setError(password, 'Email hoặc mật khẩu không chính xác.');
             }
         }
     }
 
     function setError(inputElement, message) {
-        inputElement.classList.add('is-invalid'); // Thêm class viền đỏ của Bootstrap
+        inputElement.classList.add('is-invalid');
         const errorSpan = document.getElementById(`${inputElement.id}-error`);
         if (errorSpan) {
             errorSpan.textContent = message;

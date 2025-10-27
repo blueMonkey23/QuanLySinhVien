@@ -1,7 +1,8 @@
 const validationPatterns = {
     email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-    phone: /^(\+?84|0)?([3|5|7|8|9])+([0-9]{8})$/,
-    namePattern: /^[a-zA-ZÀ-ỹ\s]+$/
+    phone: /^(\+?84|0)?([3|5|7|8|9])+([0-9]{10})$/,
+    namePattern: /^[a-zA-ZÀ-ỹ\s]+$/,
+    studentIdPattern: /^[a-zA-Z0-9]{12}$/
 };
 
 document.addEventListener('DOMContentLoaded', function()
@@ -52,12 +53,7 @@ document.addEventListener('DOMContentLoaded', function()
         const passwordVal = password.value.trim();
         const confirm_passwordVal = confirmPassword.value.trim();
 
-        setError(fullname, validateEmpty(fullnameVal, "Họ và tên"));
-        setError(email, validateEmpty(emailVal, "Email"));
-        setError(studentId, validateEmpty(studentIdVal, "Mã sinh viên"));
-        setError(password, validateEmpty(passwordVal, "Mật khẩu"));
-        setError(confirmPassword, validateEmpty(confirm_passwordVal, "Mật khẩu"));
-
+        
         if(!validationPatterns.namePattern.test(fullnameVal))
         {
             setError(fullname, "Họ và tên chỉ được chứa chữ cái và khoảng trắng")
@@ -68,13 +64,23 @@ document.addEventListener('DOMContentLoaded', function()
             setError(email, 'Email không đúng định dạng');
             isValid=false;
         }
-
+        if(!validationPatterns.studentIdPattern.test(studentIdVal))
+        {
+            setError(studentId, 'Mã sinh viên chỉ được chứa chữ và số và gồm 12 ký tự');
+            isValid=false;
+        }
         if (passwordVal.length < 6) {
             setError(password, "Mật khẩu phải có ít nhất 6 ký tự");
             isValid = false;
         }
-
-        if(confirm_passwordVal !== passwordVal)
+        setError(fullname, validateEmpty(fullnameVal, "Họ và tên"));
+        setError(email, validateEmpty(emailVal, "Email"));
+        setError(studentId, validateEmpty(studentIdVal, "Mã sinh viên"));
+        setError(password, validateEmpty(passwordVal, "Mật khẩu"));
+        if (passwordVal.length >= 6) {
+        setError(confirmPassword, validateEmpty(confirm_passwordVal, "Mật khẩu"));
+        }
+        if((confirm_passwordVal !== passwordVal) && passwordVal.length >= 6)
         {
             setError(confirmPassword, 'Mật khẩu không khớp');
             isValid=false;
