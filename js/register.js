@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function()
     const studentId = document.getElementById('student_id');
     const password = document.getElementById('password');
     const confirmPassword = document.getElementById('confirm_password');
-
+    const successMessage = document.getElementById('success-message');
     form.addEventListener('submit', function(event) {
         event.preventDefault(); 
         let isValid = validateInputs();
@@ -35,8 +35,10 @@ document.addEventListener('DOMContentLoaded', function()
             localStorage.setItem('users', JSON.stringify(users));
 
             // Thông báo và chuyển hướng
-            alert('Đăng ký tài khoản thành công!');
-            window.location.href = 'login.html';
+            successMessage.textContent = 'Đăng ký thành công!';
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
         }
     });
 
