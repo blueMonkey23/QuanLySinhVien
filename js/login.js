@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         //Nếu cả 2 trường đều đã được điền
         if (isValid) {
+            const successMessage = document.getElementById('success-message')
             // Lấy danh sách users từ localStorage
             const users = JSON.parse(localStorage.getItem('users')) || [];
 
@@ -43,13 +44,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (foundUser) {
                 //ĐĂNG NHẬP THÀNH CÔNG
-                
                 //Lưu thông tin người dùng hiện tại vào localStorage
                 localStorage.setItem('currentUser', JSON.stringify(foundUser));
-                
-                //Chuyển hướng đến trang chủ
-                alert('Đăng nhập thành công!');
-                window.location.href = 'dashboard.html';
+                successMessage.textContent = 'Đăng nhập thành công!';
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
 
             } else {
                 //ĐĂNG NHẬP THẤT BẠI
