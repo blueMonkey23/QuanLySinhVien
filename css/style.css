@@ -19,7 +19,14 @@ body.index{
 }
 
 .navbar {
-  font-family: Arial, sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  height: 56px;
 }
 
 .navbar-brand {
@@ -50,13 +57,14 @@ body.index{
 
 .sidebar {
   position: fixed;
-  top: 0;
+  top: 56px;
   left: -250px;
   width: 250px;
-  height: 100vh;
+  height: calc(100vh - 56px);
   background-color: #fff;
   transition: left 0.3s ease;
   z-index: 1040;
+  box-shadow: inset -1px 0 0 rgba(0,0,0,0.1);
 }
 
 .sidebar.active {
@@ -65,10 +73,10 @@ body.index{
 
 .overlay {
   position: fixed;
-  top: 0;
+  top: 56px;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 56px);
   background: rgba(0,0,0,0.4);
   opacity: 0;
   visibility: hidden;
@@ -112,3 +120,22 @@ body.index{
   margin-top: 0.25rem;
 }
 
+/* Dành cho pc*/
+@media (min-width: 992px) {
+  .sidebar {
+    left: 0 !important;
+    box-shadow: 1px 0 4px rgba(0,0,0,0.06);
+  }
+
+  #toggle-btn {
+    display: none;
+  }
+
+  .overlay {
+    display: none !important;
+  }
+
+  .main-content {
+    margin-left: 250px;
+  }
+}
