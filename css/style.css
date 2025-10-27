@@ -89,14 +89,6 @@ body.index{
   visibility: visible;
 }
 
-.sidebar ul li a {
-  transition: color 0.2s;
-}
-
-.sidebar ul li a:hover {
-  color: #0d6efd;
-}
-
 .form-signin {
     width: 37.5%; 
     min-width: 300px; 
@@ -118,6 +110,10 @@ body.index{
   font-size: 0.875em; 
   display: block;
   margin-top: 0.25rem;
+}
+
+.menu-seclect li:hover{
+  font-weight: bold;
 }
 
 /* Dành cho pc*/
