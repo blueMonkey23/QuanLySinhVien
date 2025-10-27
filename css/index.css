@@ -1,0 +1,23 @@
+.logo-header{
+    height:50px;
+}
+.slider {
+  width: 100%;
+  overflow: hidden;
+}
+.slider img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+.text-header-hover{
+    color:black;
+}
+.text-header-hover:hover{
+    color:aqua;
+    opacity: 0.5;
+}
+.sidebar-full{
+    width: 100%;
+}
