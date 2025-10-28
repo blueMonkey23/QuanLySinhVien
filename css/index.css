@@ -1,21 +1,11 @@
-html, body {
-    height: 100%;
-}
+/* CSS dùng chung cho các trang có sidebar */
 
-body {
-    background-image: url('../assets/images/houcasbackground.jpg'); 
-    background-size: cover;      
-    background-position: center;  
-    background-repeat: no-repeat; 
-    background-attachment: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-body.index{
-    background-image: none;
-    display: block;
+body.index {
+  /* Ghi đè các style (nếu có) từ file khác, 
+     đảm bảo trang chủ không có ảnh nền và hiển thị bình thường */
+  background-image: none;
+  display: block;
+  height: auto; /* Cho phép trang cuộn */
 }
 
 .navbar {
@@ -60,7 +50,7 @@ body.index{
   top: 56px;
   left: -250px;
   width: 250px;
-  height: calc(100vh - 56px);
+  height: calc(100vh - 56px); 
   background-color: #fff;
   transition: left 0.3s ease;
   z-index: 1040;
@@ -81,7 +71,7 @@ body.index{
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease;
-  z-index: 1030;
+  z-index: 1030; 
 }
 
 .overlay.active {
@@ -89,30 +79,11 @@ body.index{
   visibility: visible;
 }
 
-.form-signin {
-    width: 37.5%; 
-    min-width: 300px; 
-    padding: 1.5rem;
-    margin: auto;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-.error-message {
-  color: #dc3545; 
-  font-size: 0.875em; 
-  display: block;
-  margin-top: 0.25rem;
+.main-content {
+  padding-top: 56px; 
 }
 
-.success-message {
-  color: #28a745; 
-  font-size: 0.875em; 
-  display: block;
-  margin-top: 0.25rem;
-}
-
-.menu-seclect li:hover{
+.menu-seclect li:hover {
   font-weight: bold;
 }
 
@@ -134,22 +105,41 @@ body.index{
   color: #0d6efd;
 }
 
-/* Dành cho pc*/
+/* CSS cho màn hình Desktop (Đã sửa) */
 @media (min-width: 992px) {
-  .sidebar {
-    left: 0 !important;
-    box-shadow: 1px 0 4px rgba(0,0,0,0.06);
-  }
-
-  #toggle-btn {
-    display: none;
-  }
 
   .overlay {
-    display: none !important;
+    display: none !important; /* Overlay không cần thiết trên desktop */
   }
 
+  /* 1. Thêm hiệu ứng chuyển động mượt mà */
+  .sidebar, .main-content {
+    transition: all 0.3s ease-in-out;
+  }
+
+  /* 2. Sidebar BẮT ĐẦU ở trạng thái MỞ (left: 0) */
+  .sidebar {
+    left: 0;
+    /* Xóa !important để JS có thể ghi đè */
+  }
+
+  /* 3. Nội dung BẮT ĐẦU ở trạng thái LỆCH PHẢI (margin-left: 250px) */
   .main-content {
     margin-left: 250px;
   }
+
+  /* 4. ĐỊNH NGHĨA LẠI: Khi sidebar CÓ class .active (do JS thêm vào) */
+  .sidebar.active {
+    left: -250px; /* Sidebar sẽ ẨN ĐI */
+  }
+
+  /* 5. KHI sidebar CÓ class .active, main-content sẽ MỞ RỘNG RA */
+  /* (Dấu ~ nghĩa là "tìm người anh em .main-content") */
+  .sidebar.active ~ .main-content {
+    margin-left: 0;
+  }
+}
+
+.navbar .dropdown-menu {
+    position: absolute !important;
 }

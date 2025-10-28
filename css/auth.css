@@ -1,0 +1,37 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    background-image: url('../assets/images/houcasbackground.jpg'); 
+    background-size: cover;      
+    background-position: center;  
+    background-repeat: no-repeat; 
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-signin {
+    width: 37.5%; 
+    min-width: 300px; 
+    padding: 1.5rem;
+    margin: auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.error-message {
+  color: #dc3545; 
+  font-size: 0.875em; 
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.success-message {
+  color: #28a745; 
+  font-size: 0.875em; 
+  display: block;
+  margin-top: 0.25rem;
+}
