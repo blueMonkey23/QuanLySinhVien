@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 localStorage.setItem('currentUser', JSON.stringify(foundUser));
                 successMessage.textContent = 'Đăng nhập thành công!';
                 setTimeout(() => {
-                    window.location.href = 'dashboard.html';
+                    window.location.href = 'index.html';
                 }, 2000);
 
             } else {

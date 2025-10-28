@@ -1,0 +1,38 @@
+.logo-header{
+    height:50px;
+}
+.slider {
+  width: 100%;
+  overflow: hidden;
+}
+.slider img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+.text-header-hover{
+    color:black;
+}
+.text-header-hover:hover{
+    color:rgb(0, 106, 255);
+    opacity: 0.5;
+}
+.sidebar-full{
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    
+    #mainNavbar .navbar-nav.mx-auto .nav-item {
+        margin: 0;
+        padding: 0;
+    }
+    #mainNavbar .navbar-nav.mx-auto .nav-link {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    #mainNavbar .navbar-nav.mx-auto .nav-item:not(:last-child) .nav-link {
+        border-right: 1px solid rgba(0, 0, 0, 0.2);
+    }
+}
