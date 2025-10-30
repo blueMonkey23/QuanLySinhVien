@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } else {
             authButtons.innerHTML = `
-                <button class="btn btn-outline-secondary me-2" id="btnLogin">Đăng nhập</button>
+                <button class="btn text-white me-2" id="btnLogin">Đăng nhập</button>
                 <button class="btn btn-secondary fw-bold" id="btnRegister">Đăng ký</button>
             `;
         }
