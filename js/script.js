@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
                           <i class="bi bi-person fs-4"></i>
                           
                           <div class="ms-2 d-none d-sm-block">
-                              <span class="d-block" style="font-size: 0.9em; line-height: 1.2;">${currentUser.fullname}</span>
-                              <span class="d-block small text-muted" style="line-height: 1.2;">${currentUser.studentId}</span>
+                              <span class="d-block text-white" style="font-size: 0.9em; line-height: 1.2;">${currentUser.fullname}</span>
+                              <span class="d-block small text-muted text-white" style="line-height: 1.2;">${currentUser.studentId}</span>
                           </div>
                       </a>
                       <ul class="dropdown-menu dropdown-menu-end">
