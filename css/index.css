@@ -247,3 +247,126 @@ table.table tbody tr:hover { background: linear-gradient(90deg,#f8fbff,#ffffff);
 }
 
 #toggle-btn:focus { outline: 2px solid rgba(13,110,253,0.12); outline-offset: 2px; }
+
+/* ===========================
+   Schedule (Weekly) styles
+   ===========================
+   Dán đoạn này vào cuối css/index.css
+*/
+
+/* Card */
+.card-schedule {
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+  border: 0;
+  background: #fff;
+}
+
+/* Wrapper & border */
+.schedule-wrapper {
+  display: block;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.06);
+  background: #fff;
+}
+
+/* Grid: first column fixed (shift-col), 7 equal day columns */
+.schedule-header,
+.schedule-row {
+  display: grid;
+  grid-template-columns: 140px repeat(7, 1fr);
+  align-items: stretch;
+  margin: 0;
+}
+
+/* Cell base */
+.cell {
+  padding: 10px 12px;
+  border-right: 1px solid rgba(0,0,0,0.04);
+  border-bottom: 1px dashed rgba(0,0,0,0.03);
+  min-height: 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+/* Header cells (Thứ 2..CN) */
+.header-cell {
+  background: var(--muted, #f6f8fb);
+  font-weight: 600;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Left column: Sáng / Chiều / Tối */
+.shift-col {
+  background: #fff;
+  border-right: 1px solid rgba(0,0,0,0.06);
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+  padding-left: 14px;
+}
+
+/* Shift cells (regular slot) */
+.shift-cell {
+  background: #fff;
+  cursor: default;
+  transition: background .12s, transform .06s;
+  text-align: left;
+  overflow: hidden;
+  white-space: normal;
+  word-break: break-word;
+  border-left: none;
+  line-height: 1.15;
+  font-size: 0.92rem;
+}
+
+.shift-cell.text-center {
+  text-align: center;
+}
+
+.shift-cell:hover {
+  background: rgba(13,110,253,0.02);
+  transform: translateY(-1px);
+}
+
+.shift-cell.occupied {
+  background: linear-gradient(180deg, rgba(13,110,253,0.04), #fff);
+  border-left: 4px solid rgba(13,110,253,0.12);
+  padding-left: 10px;
+}
+
+.shift-cell .class-title { font-weight: 700; margin-bottom: 6px; font-size: 0.98rem; color: #0b3b78; }
+.shift-cell .tiny { font-size: 0.78rem; color: rgba(0,0,0,0.62); line-height: 1.05; }
+
+.tiny { font-size: .78rem; }
+.muted { color: rgba(0,0,0,0.45); }
+
+@media (max-width: 900px) {
+  .schedule-header, .schedule-row {
+    grid-template-columns: 120px repeat(3, 1fr);
+  }
+  .schedule-header .cell:nth-child(n+5),
+  .schedule-row .cell:nth-child(n+5) {
+    display: none;
+  }
+  .card-schedule { font-size: .95rem; }
+}
+
+.schedule-header .cell:last-child,
+.schedule-row .cell:last-child {
+  border-right: none;
+}
+
+.schedule-row:last-of-type .cell {
+  border-bottom: none;
+}
