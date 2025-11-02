@@ -370,3 +370,21 @@ table.table tbody tr:hover { background: linear-gradient(90deg,#f8fbff,#ffffff);
 .schedule-row:last-of-type .cell {
   border-bottom: none;
 }
+
+.exam-panel { display: grid; grid-template-columns: 1fr 320px; gap: 1rem; align-items:start; }
+@media (max-width: 992px){ .exam-panel{ grid-template-columns: 1fr; } }
+
+.exam-filters { display:flex; gap:.6rem; align-items:center; flex-wrap:wrap; }
+.exam-count { font-weight:700; font-size:1.05rem; }
+
+
+.table-exams thead th { background: var(--muted); position: sticky; top:0; z-index:2; }
+.status-upcoming { background: linear-gradient(180deg,#eaf3ff,#fff); border-left:4px solid rgba(13,110,253,0.12); }
+.status-done { background: linear-gradient(180deg,#f6fff1,#fff); border-left:4px solid rgba(25,135,84,0.12); }
+.exam-card-mini { border-radius:10px; padding: .7rem; border:1px solid rgba(0,0,0,0.04); }
+
+
+@media print {
+.navbar-custom, .sidebar, #toggle-btn, .overlay, .no-print { display:none !important; }
+body { background: #fff; }
+}
