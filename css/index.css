@@ -56,7 +56,7 @@ body.index {
   right: 0;
   height: var(--nav-h);
   z-index: 1100;
-  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.85));
+  background: #0b1220;
   backdrop-filter: blur(6px);
   border-bottom: 1px solid rgba(30,41,59,0.04);
   display: flex;
