@@ -388,3 +388,7 @@ table.table tbody tr:hover { background: linear-gradient(90deg,#f8fbff,#ffffff);
 .navbar-custom, .sidebar, #toggle-btn, .overlay, .no-print { display:none !important; }
 body { background: #fff; }
 }
+
+.padding-side-eschedule{
+  padding: 16px 16px;
+}
