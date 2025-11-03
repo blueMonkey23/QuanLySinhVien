@@ -7,13 +7,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentUser) {
             authButtons.innerHTML = `
               <ul class="navbar-nav ms-auto mb-2 mb-md-0">
-                <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle text-dark d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <li class="nav-item dropdown ">
+                      <a class="nav-link dropdown-toggle text-dark d-flex text-white align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                           <i class="bi bi-person fs-4"></i>
                           
                           <div class="ms-2 d-none d-sm-block">
-                              <span class="d-block" style="font-size: 0.9em; line-height: 1.2;">${currentUser.fullname}</span>
-                              <span class="d-block small text-muted" style="line-height: 1.2;">${currentUser.studentId}</span>
+                              <span class="d-block text-white" style="font-size: 0.9em; line-height: 1.2;">${currentUser.fullname}</span>
+                              <span class="d-block small text-white" style="line-height: 1.2;">${currentUser.studentId}</span>
                           </div>
                       </a>
                       <ul class="dropdown-menu dropdown-menu-end">
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } else {
             authButtons.innerHTML = `
-                <button class="btn btn-outline-secondary me-2" id="btnLogin">Đăng nhập</button>
+                <button class="btn me-2 text-white" id="btnLogin">Đăng nhập</button>
                 <button class="btn btn-secondary fw-bold" id="btnRegister">Đăng ký</button>
             `;
         }
