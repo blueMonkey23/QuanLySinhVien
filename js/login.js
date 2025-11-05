@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('login_form');
     const email = document.getElementById('email');
     const password = document.getElementById('password');
+    const API_URL = 'http://QuanLySinhVien.test/backend/api.php';
     //Gắn sự kiện "submit" cho form
     form.addEventListener('submit', function(event) {
         // Ngăn form tải lại trang
@@ -56,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function setError(inputElement, message) {
+    async function setError(inputElement, message) {
         inputElement.classList.add('is-invalid');
         const errorSpan = document.getElementById(`${inputElement.id}-error`);
         if (errorSpan) {
