@@ -354,14 +354,20 @@ table.table tbody tr:hover { background: linear-gradient(90deg,#f8fbff,#ffffff);
 
 @media (max-width: 900px) {
   .schedule-header, .schedule-row {
-    grid-template-columns: 120px repeat(3, 1fr);
+    grid-template-columns: 120px 1fr;
   }
-  .schedule-header .cell:nth-child(n+5),
-  .schedule-row .cell:nth-child(n+5) {
+  /* Ẩn tất cả cột trừ shift-col (cột đầu) */
+  .schedule-header .cell:not(:first-child),
+  .schedule-row .cell:not(:first-child) {
     display: none;
   }
-  .card-schedule { font-size: .95rem; }
+  /* Khi chọn thứ thì hiển thị lại cột tương ứng */
+  .schedule-header .cell.show,
+  .schedule-row .cell.show {
+    display: flex;
+  }
 }
+
 
 .schedule-header .cell:last-child,
 .schedule-row .cell:last-child {
