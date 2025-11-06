@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('login_form');
     const email = document.getElementById('email');
     const password = document.getElementById('password');
-    const API_URL = 'http://QuanLySinhVien.test/backend/api.php';
+    const API_URL = 'http://localhost/backend/api.php';
     //Gắn sự kiện "submit" cho form
     form.addEventListener('submit', function(event) {
         // Ngăn form tải lại trang
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     //Hàm xử lý logic đăng nhập
-    function handleLogin() {
+    async function handleLogin() {
         resetErrors();
         const emailVal = email.value.trim();
         const passwordVal = password.value.trim();
@@ -32,28 +32,30 @@ document.addEventListener('DOMContentLoaded', function() {
         //Nếu cả 2 trường đều đã được điền
         if (isValid) {
             const successMessage = document.getElementById('success-message')
-            // Lấy danh sách users từ localStorage
-            const users = JSON.parse(localStorage.getItem('users')) || [];
-
-            //Tìm người dùng khớp cả email VÀ password
-            const foundUser = users.find(user => {
-                return user.email === emailVal && user.password === passwordVal;
-            });
-
-            if (foundUser) {
-                //ĐĂNG NHẬP THÀNH CÔNG
-                //Lưu thông tin người dùng hiện tại vào localStorage
-                localStorage.setItem('currentUser', JSON.stringify(foundUser));
-                successMessage.textContent = 'Đăng nhập thành công!';
-                setTimeout(() => {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({action: 'login', email: emailVal, password: passwordVal})
+                }
+                );
+                const result = await response.json();
+                if (result.success) {
+                    successMessage.textContent = result.message;
+                    setTimeout(() => {
                     window.location.href = 'index.html';
-                }, 2000);
-
-            } else {
-                //ĐĂNG NHẬP THẤT BẠI
-                setError(email,'');
-                setError(password, 'Email hoặc mật khẩu không chính xác.');
+                    }, 2000);
+                } else {
+                    setError(email, '');
+                    setError(password, 'Email hoặc mật khẩu không chính xác.');
+                }
+            } catch (error) {
+                alert('Đã có lỗi xảy ra trong quá trình đăng nhập. Vui lòng thử lại sau.');
+                console.error('Error during login:', error);
             }
+
         }
     }
 

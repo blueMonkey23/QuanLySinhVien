@@ -1,13 +1,17 @@
 <?php
+error_log("--- FILE API.PHP ĐÃ CHẠY ---");
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
-header("access-control-allow-origin: http://QuanLySinhVien.test");
+header("access-control-allow-origin: http://localhost");
 header("access-control-allow-methods: GET, POST, OPTIONS, PUT, DELETE");
 header("access-control-allow-headers: Content-Type");
 header("content-type: application/json; charset=utf-8");
 $host = '127.0.0.1';
 $db_name = 'quanlysinhvien_db';
 $username = 'root';
-$password = '';
+$db_password = '';
 $charset = 'utf8mb4';
 
 $response = [
@@ -23,11 +27,14 @@ function get_current_user_id() {
             'success' => false,
             'message' => 'Lỗi: Bạn chưa đăng nhập hoặc phiên đã hết hạn.',
         ]);
+        exit();
     }
     return $_SESSION['user_id'];
 }
-
-$action = $_GET['action'] ?? null; // nếu không có action thì gán null
+$input = json_decode(file_get_contents('php://input'), true);
+$email = $input['email'] ?? '';
+$password = $input['password'] ?? '';
+$action = $input['action'] ?? null;
 $method = $_SERVER['REQUEST_METHOD']; // Lấy phương thức HTTP của yêu cầu
 
 try {
@@ -37,16 +44,24 @@ try {
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES   => false,
     ];
-    $pdo = new PDO($dsn, $username, $password, $options);
-    if ($method === 'POST' && action === 'login'){
-        $input = json_decode(file_get_contents('php://input'), true);
-        $email = $input['email'] ?? '';
-        $password = $input['password'] ?? '';
+    $pdo = new PDO($dsn, $username, $db_password, $options);
+    error_log("API DEBUG: Method là: " . $method . " | Action là: " . $action);
+    if ($method === 'POST' && $action === 'login'){
+        
 
-        $stmt = $pdo -> prepare("SELECT id, password_hash FROM users WHERE email = ?");
+        $stmt = $pdo -> prepare("SELECT id, email, password_hash FROM users WHERE email = ?");
         $stmt ->execute([$email]);
         $user = $stmt -> fetch();
-
+        if (!$user) {
+            error_log("API DEBUG: Không tìm thấy user với email: " . $email);
+        } else {
+            error_log("API DEBUG: Password nhận được (từ input): '" . $password . "'");
+            error_log("API DEBUG: Hash lấy từ CSDL: '" . $user['password_hash'] . "'");
+            
+            // Kiểm tra kết quả verify
+            $is_correct = password_verify($password, $user['password_hash']);
+            error_log("API DEBUG: Kết quả password_verify: " . ($is_correct ? 'TRUE' : 'FALSE'));
+        }
         if ($user && password_verify($password, $user['password_hash'])){
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_email'] = $user['email'];
@@ -61,7 +76,7 @@ try {
             http_response_code(401); // Unauthorized
             $response['message'] = 'Email hoặc mật khẩu không chính xác!';
         }
-    } else if ($method === 'GET' && action === 'logout'){
+    } else if ($method === 'GET' && $action === 'logout'){
         session_unset();
         session_destroy();
         $response['success'] = true;
