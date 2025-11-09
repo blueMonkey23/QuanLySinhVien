@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('login_form');
     const email = document.getElementById('email');
     const password = document.getElementById('password');
-    const API_URL = 'http://localhost/backend/api.php';
+    const API_URL = 'http://localhost/backend/login.php';
     //Gắn sự kiện "submit" cho form
     form.addEventListener('submit', function(event) {
         // Ngăn form tải lại trang
@@ -28,7 +28,10 @@ document.addEventListener('DOMContentLoaded', function() {
             setError(password, 'Mật khẩu không được để trống');
             isValid = false;
         }
-
+        const data = {
+            email: emailVal,
+            password: passwordVal
+        };
         //Nếu cả 2 trường đều đã được điền
         if (isValid) {
             const successMessage = document.getElementById('success-message')
@@ -37,8 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({action: 'login', email: emailVal, password: passwordVal})
+                    },  
+                    body: JSON.stringify({action: 'login', data: data})
                 }
                 );
                 const result = await response.json();
