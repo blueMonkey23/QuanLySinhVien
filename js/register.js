@@ -1,9 +1,10 @@
 const validationPatterns = {
     email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-    phone: /^(\+?84|0)?([3|5|7|8|9])+([0-9]{8})$/,
-    namePattern: /^[a-zA-ZÀ-ỹ\s]+$/
+    phone: /^(\+?84|0)?([3|5|7|8|9])+([0-9]{10})$/,
+    namePattern: /^[a-zA-ZÀ-ỹ\s]+$/,
+    studentIdPattern: /^[a-zA-Z0-9]{12}$/
 };
-
+const API_URL = '//localhost/backend/register.php'; 
 document.addEventListener('DOMContentLoaded', function()
 {
     const form = document.getElementById('register_form');
@@ -17,28 +18,61 @@ document.addEventListener('DOMContentLoaded', function()
         event.preventDefault(); 
         let isValid = validateInputs();
         if (isValid) {
-            // Lấy danh sách người dùng đã đăng ký từ localStorage
-            let users = JSON.parse(localStorage.getItem('users')) || [];
+            //tránh spam
+            form.querySelector('button[type="submit"]').disabled = true;
+            const dataToSend = {
+                data: {
+                    name: fullname.value.trim(),
+                    email: email.value.trim(),
+                    student_id: studentId.value.trim(),
+                    password: password.value.trim()
+                }
+            }
 
-            // Tạo đối tượng người dùng mới
-            const newUser = {
-                fullname: fullname.value.trim(),
-                email: email.value.trim(),
-                studentId: studentId.value.trim(),
-                password: password.value.trim() // Chỉ lưu mật khẩu, không lưu "confirm_password"
-            };
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataToSend)
+            })
+            .then(response => {
+                return response.json().then(data => ({
+                    status: response.status,
+                    body: data
+                }));
+            })
+            .then (({status, body }) => {
+                if (body.success) {
+                    successMessage.style.color = 'green';
+                    successMessage.textContent = body.message;
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                } else {
+                    successMessage.style.color = 'red';
+                    if (status === 409) { // lỗi đã tồn tại email hoặc mã sv
+                        if (body.message.includes('email')) {
+                            setError(email, body.message);
+                        } else if (body.message.includes('student_id')) {
+                            setError(studentId, body.message);
+                        } else {
+                        successMessage.textContent = body.message;
+                    } 
+                    } else {
+                        // 500,405 
+                        successMessage.textContent = body.message;
+                    }
+                    form.querySelector('button[type="submit"]').disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('lỗi fetch:', error);
+                successMessage.style.color = 'red';
+                successMessage.textContent = 'Lỗi kết nối. vui lòng thử lại sau!';
+                form.querySelector('button[type="submit"]').disabled = false;
 
-            // Thêm người dùng mới vào mảng
-            users.push(newUser);
-
-            // Lưu mảng users mới cập nhật trở lại localStorage
-            localStorage.setItem('users', JSON.stringify(users));
-
-            // Thông báo và chuyển hướng
-            successMessage.textContent = 'Đăng ký thành công!';
-            setTimeout(() => {
-                window.location.href = 'login.html';
-            }, 2000);
+            })
         }
     });
 
@@ -51,47 +85,46 @@ document.addEventListener('DOMContentLoaded', function()
         const studentIdVal = studentId.value.trim();
         const passwordVal = password.value.trim();
         const confirm_passwordVal = confirmPassword.value.trim();
-
-        setError(fullname, validateEmpty(fullnameVal, "Họ và tên"));
-        setError(email, validateEmpty(emailVal, "Email"));
-        setError(studentId, validateEmpty(studentIdVal, "Mã sinh viên"));
-        setError(password, validateEmpty(passwordVal, "Mật khẩu"));
-        setError(confirmPassword, validateEmpty(confirm_passwordVal, "Mật khẩu"));
-
-        if(!validationPatterns.namePattern.test(fullnameVal))
-        {
-            setError(fullname, "Họ và tên chỉ được chứa chữ cái và khoảng trắng")
+        if (!fullnameVal) {
+            setError(fullname, "Họ và tên không được để trống");
+            isValid = false;
         }
-
-        if(!validationPatterns.email.test(emailVal))
-        {
+        if (!emailVal) {
+            setError(email, "Email không được để trống");
+            isValid = false;
+        }
+        if (!studentIdVal) {
+            setError(studentId, "Mã sinh viên không được để trống");
+            isValid = false;
+        }
+        if (!passwordVal) {
+            setError(password, "Mật khẩu không được để trống");
+            isValid = false;
+        }
+        if (fullnameVal && !validationPatterns.namePattern.test(fullnameVal)) {
+            setError(fullname, "Họ và tên chỉ được chứa chữ cái và khoảng trắng");
+            isValid = false;
+        }
+        if (emailVal && !validationPatterns.email.test(emailVal)) {
             setError(email, 'Email không đúng định dạng');
-            isValid=false;
+            isValid = false;
         }
-
-        if (passwordVal.length < 6) {
+        if (studentIdVal && !validationPatterns.studentIdPattern.test(studentIdVal)) {
+            setError(studentId, 'Mã sinh viên chỉ được chứa chữ và số và gồm 12 ký tự');
+            isValid = false;
+        }
+        if (passwordVal && passwordVal.length < 6) {
             setError(password, "Mật khẩu phải có ít nhất 6 ký tự");
             isValid = false;
         }
-
-        if(confirm_passwordVal !== passwordVal)
-        {
+        if (passwordVal.length >= 6 && !confirm_passwordVal) {
+            setError(confirmPassword, "Bạn phải xác nhận mật khẩu");
+            isValid = false;
+        }
+        if (confirm_passwordVal && passwordVal !== confirm_passwordVal) {
             setError(confirmPassword, 'Mật khẩu không khớp');
-            isValid=false;
+            isValid = false;
         }
-        
-        if (isValid) {
-            let users = JSON.parse(localStorage.getItem('users')) || [];
-            if (users.some(user => user.email === emailVal)) {
-                setError(email, 'Email này đã được sử dụng');
-                isValid = false;
-            }
-            if (users.some(user => user.studentId === studentIdVal)) {
-                setError(studentId, 'Mã sinh viên này đã được sử dụng');
-                isValid = false;
-            }
-        }
-
         return isValid;
 
     }
