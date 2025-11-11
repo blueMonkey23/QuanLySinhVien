@@ -249,13 +249,6 @@ table.table tbody tr:hover { background: linear-gradient(90deg,#f8fbff,#ffffff);
 
 #toggle-btn:focus { outline: 2px solid rgba(13,110,253,0.12); outline-offset: 2px; }
 
-/* ===========================
-   Schedule (Weekly) styles
-   ===========================
-   Dán đoạn này vào cuối css/index.css
-*/
-
-/* Card */
 .card-schedule {
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
@@ -263,7 +256,6 @@ table.table tbody tr:hover { background: linear-gradient(90deg,#f8fbff,#ffffff);
   background: #fff;
 }
 
-/* Wrapper & border */
 .schedule-wrapper {
   display: block;
   border-radius: 8px;
@@ -272,7 +264,6 @@ table.table tbody tr:hover { background: linear-gradient(90deg,#f8fbff,#ffffff);
   background: #fff;
 }
 
-/* Grid: first column fixed (shift-col), 7 equal day columns */
 .schedule-header,
 .schedule-row {
   display: grid;
@@ -281,7 +272,6 @@ table.table tbody tr:hover { background: linear-gradient(90deg,#f8fbff,#ffffff);
   margin: 0;
 }
 
-/* Cell base */
 .cell {
   padding: 10px 12px;
   border-right: 1px solid rgba(0,0,0,0.04);
@@ -295,7 +285,7 @@ table.table tbody tr:hover { background: linear-gradient(90deg,#f8fbff,#ffffff);
   font-size: 0.95rem;
 }
 
-/* Header cells (Thứ 2..CN) */
+/*Thứ 2..CN*/
 .header-cell {
   background: var(--muted, #f6f8fb);
   font-weight: 600;
@@ -305,7 +295,7 @@ table.table tbody tr:hover { background: linear-gradient(90deg,#f8fbff,#ffffff);
   justify-content: center;
 }
 
-/* Left column: Sáng / Chiều / Tối */
+/*Sáng / Chiều / Tối */
 .shift-col {
   background: #fff;
   border-right: 1px solid rgba(0,0,0,0.06);
@@ -317,7 +307,6 @@ table.table tbody tr:hover { background: linear-gradient(90deg,#f8fbff,#ffffff);
   padding-left: 14px;
 }
 
-/* Shift cells (regular slot) */
 .shift-cell {
   background: #fff;
   cursor: default;
@@ -356,12 +345,18 @@ table.table tbody tr:hover { background: linear-gradient(90deg,#f8fbff,#ffffff);
   .schedule-header, .schedule-row {
     grid-template-columns: 120px 1fr;
   }
+<<<<<<< Updated upstream
   /* Ẩn tất cả cột trừ shift-col (cột đầu) */
+=======
+>>>>>>> Stashed changes
   .schedule-header .cell:not(:first-child),
   .schedule-row .cell:not(:first-child) {
     display: none;
   }
+<<<<<<< Updated upstream
   /* Khi chọn thứ thì hiển thị lại cột tương ứng */
+=======
+>>>>>>> Stashed changes
   .schedule-header .cell.show,
   .schedule-row .cell.show {
     display: flex;
