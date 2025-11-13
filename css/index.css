@@ -393,3 +393,15 @@ body { background: #fff; }
 .padding-side-eschedule{
   padding: 16px 16px;
 }
+.error-message {
+  color: #dc3545; 
+  font-size: 0.875em; 
+  display: block;
+  margin-top: 0.25rem;
+}
+.success-message {
+  color: #28a745; 
+  font-size: 0.875em; 
+  display: block;
+  margin-top: 0.25rem;
+}
