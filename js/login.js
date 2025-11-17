@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     //Hàm xử lý logic đăng nhập
+    // Thay thế hàm handleLogin trong tệp js/login.js
+
+    //Hàm xử lý logic đăng nhập
     async function handleLogin() {
         resetErrors();
         const emailVal = email.value.trim();
@@ -45,11 +48,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 );
                 const result = await response.json();
+                
                 if (result.success) {
                     successMessage.textContent = result.message;
+                    
+                    // --- BẮT ĐẦU LOGIC CHUYỂN HƯỚNG THEO VAI TRÒ (ROLE-BASED REDIRECTION) ---
+                    const userRole = result.data.role;
+                    let redirectUrl = 'index.html'; // Mặc định cho sinh viên
+                    
+                    // Nếu là admin, manager, hoặc teacher, chuyển đến dashboard quản lý
+                    if (userRole === 'admin' || userRole === 'manager' || userRole === 'teacher') {
+                        redirectUrl = 'manager_dashboard.html';
+                    }
+
                     setTimeout(() => {
-                    window.location.href = 'index.html';
+                        window.location.href = redirectUrl; // Chuyển hướng
                     }, 2000);
+                    // ------------------ KẾT THÚC LOGIC CHUYỂN HƯỚNG --------------------
+                    
                 } else {
                     setError(email, '');
                     setError(password, 'Email hoặc mật khẩu không chính xác.');

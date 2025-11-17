@@ -1,9 +1,13 @@
+// Thay thế toàn bộ nội dung tệp script.js của bạn
 document.addEventListener('DOMContentLoaded', function() {
     const authButtons = document.getElementById('authButtons');
-    const API_STATUS_URL = 'http://localhost/backend/status.php';
-    const API_LOGOUT_URL = 'http://localhost/backend/logout.php';
+    const API_STATUS_URL = 'http://localhost/backend/status.php'; 
+    const API_LOGOUT_URL = 'http://localhost/backend/logout.php'; 
+
     function updateAuthUI(currentUser) {
         if (currentUser) {
+            const userIdentifier = currentUser.identifier || currentUser.role; 
+
             authButtons.innerHTML = `
                 <ul class="navbar-nav ms-auto mb-2 mb-md-0">
                   <li class="nav-item dropdown ">
@@ -12,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             
                             <div class="ms-2 d-none d-sm-block">
                                 <span class="d-block text-white" style="font-size: 0.9em; line-height: 1.2;">${currentUser.fullname}</span>
-                                <span class="d-block small text-white" style="line-height: 1.2;">${currentUser.studentId}</span>
+                                <span class="d-block small text-white" style="line-height: 1.2;">${userIdentifier}</span>
                             </div>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
@@ -34,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
         }
     }
+    
     if (authButtons) {
         authButtons.addEventListener('click', function(event) {
             const targetId = event.target.id;
@@ -45,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (data.success) {
                             alert('Đăng xuất thành công!');
                             updateAuthUI(null);
+                            window.location.href = 'login.html'; // Chuyển về trang đăng nhập
                         } else {
                             alert('Lỗi đăng xuất: ' + data.message);
                         }
@@ -63,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Kiểm tra trạng thái đăng nhập
     fetch(API_STATUS_URL)
         .then(response => response.json())
         .then(data => {
@@ -70,25 +77,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateAuthUI(data.data);
             } else {
                 updateAuthUI(null);
+                // Nếu trang hiện tại không phải là login/register, chuyển hướng
+                const currentPage = window.location.pathname.split('/').pop();
+                if (currentPage !== 'login.html' && currentPage !== 'register.html') {
+                    // Tự động chuyển về trang đăng nhập nếu chưa đăng nhập
+                    window.location.href = 'login.html';
+                }
             }
         })
         .catch(error => {
             console.error('Lỗi khi kiểm tra trạng thái đăng nhập:', error);
             updateAuthUI(null);
         });
+
+    // Xử lý Sidebar
+    const toggleBtn = document.getElementById("toggle-btn");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+
+    if (toggleBtn && sidebar && overlay) {
+        toggleBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("active");
+            overlay.classList.toggle("active");
+        });
+
+        overlay.addEventListener("click", () => {
+            sidebar.classList.remove("active");
+            overlay.classList.remove("active");
+        });
+    }
 });
-const toggleBtn = document.getElementById("toggle-btn");
-const sidebar = document.getElementById("sidebar");
-const overlay = document.getElementById("overlay");
-
-if (toggleBtn && sidebar && overlay) {
-    toggleBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("active");
-        overlay.classList.toggle("active");
-    });
-
-    overlay.addEventListener("click", () => {
-        sidebar.classList.remove("active");
-        overlay.classList.remove("active");
-    });
-}
