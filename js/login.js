@@ -1,8 +1,9 @@
+//js/login.js
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('login_form');
     const email = document.getElementById('email');
     const password = document.getElementById('password');
-    const API_URL = 'http://localhost/backend/login.php';
+    const API_URL = 'http://localhost:8080/backend/login.php';
     //Gắn sự kiện "submit" cho form
     form.addEventListener('submit', function(event) {
         // Ngăn form tải lại trang

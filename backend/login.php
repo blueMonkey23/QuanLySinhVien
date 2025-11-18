@@ -1,22 +1,20 @@
 <?php
 require 'config.php';
 
-$method = $_SERVER['REQUEST_METHOD'];
-if ($method !== 'POST') {
-    http_response_code(405); 
-    $response['message'] = 'Phương thức không hợp lệ, chỉ chấp nhận POST';
-    echo json_encode($response);
-    exit();
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') exit;
+$input = json_decode(file_get_contents('php://input'), true);
+$data = $input['data'] ?? null;
+
+if (!$data) {
+    echo json_encode(['success' => false, 'message' => 'Thiếu dữ liệu']);
+    exit;
 }
 
-$input = json_decode(file_get_contents('php://input'), true);
-$email = $input['data']['email'] ?? '';
-$password = $input['data']['password'] ?? '';
-
 try {
-    $stmt = $pdo->prepare("SELECT id, email, password_hash FROM users WHERE email = ?");
-    $stmt->execute([$email]);
+    $stmt = $pdo->prepare("SELECT id, name, email, password_hash FROM users WHERE email = ?");
+    $stmt->execute([$data['email']]);
     $user = $stmt->fetch();
+<<<<<<< Updated upstream
     if ($user && password_verify($password, $user['password_hash'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_email'] = $user['email'];
@@ -26,14 +24,32 @@ try {
             'user_id' => $user['id'],
             'email' => $user['email']
         ];
-    } else {
-        http_response_code(401);
-        $response['message'] = 'Email hoặc mật khẩu không chính xác!';
-    }
+=======
 
-} catch (PDOException $e) {
-    http_response_code(500); 
-    $response['message'] = "Lỗi Database: " . $e->getMessage();
+    if ($user && password_verify($data['password'], $user['password_hash'])) {
+        // Lấy quyền từ bảng role_user và roles
+        $stmtRole = $pdo->prepare("
+            SELECT r.name 
+            FROM roles r 
+            JOIN role_user ru ON r.id = ru.role_id 
+            WHERE ru.user_id = ? LIMIT 1
+        ");
+        $stmtRole->execute([$user['id']]);
+        $role = $stmtRole->fetchColumn() ?: 'student';
+
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['role'] = $role;
+
+        echo json_encode([
+            'success' => true, 
+            'message' => 'Đăng nhập thành công',
+            'data' => ['role' => $role, 'fullname' => $user['name']]
+        ]);
+>>>>>>> Stashed changes
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Email hoặc mật khẩu sai']);
+    }
+} catch (Exception $e) {
+    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }
-echo json_encode($response);
 ?>

@@ -1,7 +1,15 @@
+<<<<<<< Updated upstream
 document.addEventListener('DOMContentLoaded', function() {
     const authButtons = document.getElementById('authButtons');
     const API_STATUS_URL = 'http://localhost/backend/status.php';
     const API_LOGOUT_URL = 'http://localhost/backend/logout.php';
+=======
+//js/script.js
+document.addEventListener('DOMContentLoaded', function() {
+    const authButtons = document.getElementById('authButtons');
+    const API_STATUS_URL = 'http://localhost:8080/backend/status.php'; 
+    const API_LOGOUT_URL = 'http://localhost:8080/backend/logout.php';
+>>>>>>> Stashed changes
     function updateAuthUI(currentUser) {
         if (currentUser) {
             authButtons.innerHTML = `

@@ -1,3 +1,4 @@
+// backend/logout.php
 <?php
 require 'config.php';
 $method = $_SERVER['REQUEST_METHOD'];

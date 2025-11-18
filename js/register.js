@@ -1,10 +1,11 @@
+//js/register.js
 const validationPatterns = {
     email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     phone: /^(\+?84|0)?([3|5|7|8|9])+([0-9]{10})$/,
     namePattern: /^[a-zA-ZÀ-ỹ\s]+$/,
     studentIdPattern: /^[a-zA-Z0-9]{12}$/
 };
-const API_URL = 'http://localhost/backend/register.php'; 
+const API_URL = 'http://localhost:8080/backend/register.php';
 document.addEventListener('DOMContentLoaded', function()
 {
     const form = document.getElementById('register_form');

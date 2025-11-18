@@ -1,0 +1,123 @@
+<!--add_Class.html-->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm lớp học</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/hou-logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <nav class="navbar-custom d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <button id="toggle-btn" class="me-2">
+                <i class="bi bi-list text-white" style="font-size:1.3rem;color:var(--primary)"></i>
+            </button>           
+            <a class="brand-title text-white" href="#">ỨNG DỤNG QUẢN LÍ SINH VIÊN</a>
+        </div>
+        <div class="d-flex align-items-center">
+            <div class="me-3 text-end">
+                <div class="d-flex" id="authButtons">
+                </div>
+            </div>
+        </div>
+    </nav>
+    <aside id="sidebar" class="sidebar" aria-hidden="false">
+        <div class="px-3">
+            <div class="mb-3 px-2">
+                <img src="assets/images/hou-logo.png" alt="logo" style="width:44px;height:44px;border-radius:8px;margin-right:.6rem;vertical-align:middle">
+                <span style="vertical-align:middle;font-weight:700">Hệ thống</span>
+            </div>
+            <nav class="menu">
+                <a href="index.html"><i class="bi bi-house me-2"></i> Trang chủ</a>
+                <a href="information.html"><i class="bi bi-person-lines-fill me-2"></i> Thông tin sinh viên</a>
+                <a href="grades.html"><i class="bi bi-book me-2"></i> Xem điểm học tập</a>
+                <a href="class_schedule.html"><i class="bi bi-journal-text me-2"></i> Xem lịch học</a>
+                <a href="exam_schedule.html"><i class="bi bi-calendar me-2"></i> Xem lịch thi</a>
+            </nav>
+        </div>
+    </aside>
+    <div id="overlay" class="overlay"></div>
+    <main class="content">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="m-0 fw-bold">Thêm lớp học</h2>
+            </div>
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body p-3">
+                            <form id="add_class_form" method="POST">                           
+                                <div class="mb-3">
+                                    <label for="classId" class="form-label">Mã lớp học</label>
+                                    <input type="text" class="form-control" id="classId" placeholder="Nhập mã lớp học">
+                                    <span class="error-message" id="classId-error"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="subjectId" class="form-label">Mã học phần</label>
+                                    <input type="text" class="form-control" id="subjectId" placeholder="Nhập mã học phần">
+                                    <span class="error-message" id="subjectId-error"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="teacherId" class="form-label">Mã giảng viên</label>
+                                    <input type="text" class="form-control" id="teacherId" placeholder="Nhập mã giảng viên">
+                                    <span class="error-message" id="teacherId-error"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="classRoom" class="form-label">Phòng học</label>
+                                    <input type="text" class="form-control" id="classRoom" placeholder="Nhập phòng học">
+                                    <span class="error-message" id="classRoom-error"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="dayOfWeek" class="form-label">Ngày học trong tuần</label>
+                                    <select class="form-select" id="dayOfWeek">
+                                        <option value="" selected>Chọn ngày học</option>
+                                        <option value="2">Thứ Hai</option>
+                                        <option value="3">Thứ Ba</option>
+                                        <option value="4">Thứ Tư</option>
+                                        <option value="5">Thứ Năm</option>
+                                        <option value="6">Thứ Sáu</option>
+                                        <option value="7">Thứ Bảy</option>
+                                        <option value="8">Chủ Nhật</option>
+                                    </select>
+                                    <span class="error-message" id="dayOfWeek-error"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="scheduleTime" class="form-label">Thời gian học</label>
+                                    <select class="form-select" id="scheduleTime">
+                                        <option value="" selected>Chọn ca học</option>
+                                        <option value="1">Ca sáng (7:30-11:30)</option>
+                                        <option value="2">Ca chiều (12:45-16:00)</option>
+                                        <option value="3">Ca tối (18:30-21:30)</option>
+                                    </select>
+                                    <span class="error-message" id="scheduleTime-error"></span>
+                                </div>    
+                                <div class="mb-3">
+                                    <label for="format" class="form-label">Hình thức học</label>
+                                    <select class="form-select" id="format">
+                                        <option value="" selected>Chọn hình thức học</option>
+                                        <option value="1">Trực tiếp</option>
+                                        <option value="2">Trực tuyến</option>
+                                    </select>
+                                    <span class="error-message" id="format-error"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="success-message" id="success-message"></span>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Thêm lớp học</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/add_class.js"> </script>
+</body>
+</html>
