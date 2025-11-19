@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    const API_SCHEDULE = 'backend/manager_schedule.php';
-    const API_FETCH_DATA = 'backend/class_data_fetch.php'; // Tái sử dụng để lấy list giáo viên
+    const API_SCHEDULE = `${CONFIG.API_BASE_URL}/manager_schedule.php`;
+    const API_FETCH_DATA = `${CONFIG.API_BASE_URL}/class_data_fetch.php`; // Tái sử dụng để lấy list giáo viên
 
     const filterTeacher = document.getElementById('filter_teacher');
     const filterRoom = document.getElementById('filter_room');

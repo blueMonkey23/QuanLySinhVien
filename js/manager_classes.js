@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    const API_URL_LIST = 'backend/manager_classes.php';
-    const API_URL_DELETE = 'backend/manager_class_delete.php';
-    const API_URL_LOCK = 'backend/manager_class_lock.php';
-    const API_FETCH_DATA = 'backend/class_data_fetch.php'; // API lấy danh sách môn học
+    const API_URL_LIST = `${CONFIG.API_BASE_URL}/manager_classes.php`;
+    const API_URL_DELETE = `${CONFIG.API_BASE_URL}/manager_class_delete.php`;
+    const API_URL_LOCK = `${CONFIG.API_BASE_URL}/manager_class_lock.php`;
+    const API_FETCH_DATA = `${CONFIG.API_BASE_URL}/class_data_fetch.php`; // API lấy danh sách môn học
 
     // Các phần tử DOM
     const tableBody = document.getElementById('class-list-tbody');

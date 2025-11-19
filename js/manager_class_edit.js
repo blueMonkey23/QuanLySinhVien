@@ -1,8 +1,8 @@
 // js/manager_class_edit.js
 
-const API_FETCH_DROPDOWN = 'backend/class_data_fetch.php';
-const API_GET_CLASS = 'backend/manager_class_get.php';
-const API_EDIT_CLASS = 'backend/manager_class_edit.php';
+const API_FETCH_DROPDOWN = `${CONFIG.API_BASE_URL}class_data_fetch.php`;
+const API_GET_CLASS = `${CONFIG.API_BASE_URL}manager_class_get.php`;
+const API_EDIT_CLASS = `${CONFIG.API_BASE_URL}manager_class_edit.php`;
 
 document.addEventListener('DOMContentLoaded', async function() {
     
