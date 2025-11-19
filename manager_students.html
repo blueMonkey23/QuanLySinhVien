@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Sinh viên</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/hou-logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <nav class="navbar-custom d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <button id="toggle-btn" class="me-2"><i class="bi bi-list text-white fs-4"></i></button>
+            <a class="brand-title text-white" href="#">QUẢN LÝ ĐÀO TẠO</a>
+        </div>
+        <div class="me-3 text-end" id="authButtons"></div>
+    </nav>
+
+    <aside id="sidebar" class="sidebar" aria-hidden="false">
+        <div class="px-3">
+        <div class="mb-3 px-2">
+            <img src="assets/images/hou-logo.png" alt="logo" style="width:44px;height:44px;border-radius:8px;margin-right:.6rem;vertical-align:middle">
+            <span style="vertical-align:middle;font-weight:700">Hệ thống Quản lý</span>
+        </div>
+        
+        <nav class="menu">
+            <a href="manager_dashboard.html"><i class="bi bi-house me-2"></i> Trang chủ</a>
+            <a href="manager_classes.html"><i class="bi bi-easel me-2"></i> Quản lý Lớp học</a>
+            <a href="manager_students.html" class="active"><i class="bi bi-people me-2"></i> Quản lý Sinh viên</a>
+            <a href="manager_grades.html"><i class="bi bi-journal-check me-2"></i> Quản lý Điểm số</a>
+            <a href="manager_attendance.html"><i class="bi bi-person-check me-2"></i> Điểm danh</a>
+            <a href="manager_assignments.html"><i class="bi bi-file-earmark-text me-2"></i> Quản lý Bài tập</a>
+            <a href="manager_schedule.html"><i class="bi bi-calendar-event me-2"></i> Lịch giảng dạy</a>
+        </nav>
+        </div>
+    </aside>
+    <div id="overlay" class="overlay"></div>
+
+    <main class="content">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="fw-bold text-primary">Danh sách Sinh viên</h3>
+                <button class="btn btn-primary" onclick="openModal()">
+                    <i class="bi bi-person-plus-fill me-2"></i> Thêm mới
+                </button>
+            </div>
+
+            <div class="card p-3 mb-3 shadow-sm border-0">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                            <input type="text" id="searchStudent" class="form-control border-start-0" placeholder="Nhập tên hoặc mã sinh viên...">
+                            <button class="btn btn-primary" onclick="loadStudents()">Tìm kiếm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-3">Mã SV</th>
+                                <th>Họ và Tên</th>
+                                <th>Email</th>
+                                <th>Ngày sinh</th>
+                                <th>Giới tính</th>
+                                <th>Trạng thái</th>
+                                <th class="text-center">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="student-list-tbody">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="studentModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="modalTitle">Thêm Sinh viên</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="studentForm">
+                        <input type="hidden" id="studentId">
+                        <div class="mb-3">
+                            <label class="form-label">Mã Sinh viên <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="studentCode" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="fullname" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label">Ngày sinh</label>
+                                <input type="date" class="form-control" id="dob">
+                            </div>
+                            <div class="col">
+                                <label class="form-label">Giới tính</label>
+                                <select class="form-select" id="gender">
+                                    <option value="Nam">Nam</option>
+                                    <option value="Nữ">Nữ</option>
+                                    <option value="Khác">Khác</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Địa chỉ</label>
+                            <textarea class="form-control" id="address" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" onclick="saveStudent()">Lưu lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="scheduleModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title"><i class="bi bi-calendar-week me-2"></i> Hồ sơ học tập: <span id="scheduleStudentName" class="fw-bold"></span></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body bg-light">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-striped mb-0">
+                                    <thead class="table-white">
+                                        <tr>
+                                            <th>Mã Lớp</th>
+                                            <th>Môn Học</th>
+                                            <th>Giảng Viên</th>
+                                            <th>Lịch Học</th>
+                                            <th>Phòng</th>
+                                            <th class="text-center">Điểm (GK / CK)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="schedule-tbody">
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="no-class-msg" class="text-center text-muted py-4 d-none">
+                        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                        Sinh viên này chưa đăng ký lớp học nào.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/manager_students.js"></script>
+</body>
+</html>
