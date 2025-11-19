@@ -1,4 +1,3 @@
-<!--manager_classes.html-->
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -6,25 +5,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Quản lý Lớp học</title>
   <link rel="icon" type="image/x-icon" href="assets/images/hou-logo.png">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
   <nav class="navbar-custom d-flex justify-content-between align-items-center">
     <div class="d-flex align-items-center">
-      <button id="toggle-btn" class="me-2">
-        <i class="bi bi-list text-white" style="font-size:1.3rem;color:var(--primary)"></i>
-      </button>
-      <a class="brand-title text-white" href="#">ỨNG DỤNG QUẢN LÝ LỚP HỌC</a>
+      <button id="toggle-btn" class="me-2"><i class="bi bi-list text-white fs-4"></i></button>
+      <a class="brand-title text-white" href="#">QUẢN LÝ ĐÀO TẠO</a>
     </div>
-
-    <div class="d-flex align-items-center">
-      <div class="me-3 text-end">
-          <div class="d-flex" id="authButtons">
-              </div>
-      </div>
-    </div>
+    <div class="me-3 text-end" id="authButtons"></div>
   </nav>
 
   <aside id="sidebar" class="sidebar" aria-hidden="false">
@@ -35,13 +26,13 @@
       </div>
       
       <nav class="menu">
-        <a href="teacher_dashboard.html"><i class="bi bi-house me-2"></i> Trang chủ</a>
-        <a href="teacher_classes.html" class="active"><i class="bi bi-easel me-2"></i> Quản lý Lớp học</a>
-        <a href="teacher_students.html"><i class="bi bi-people me-2"></i> Quản lý Sinh viên</a>
-        <a href="teacher_grades.html"><i class="bi bi-journal-check me-2"></i> Quản lý Điểm số</a>
-        <a href="teacher_attendance.html"><i class="bi bi-person-check me-2"></i> Điểm danh</a>
-        <a href="teacher_assignments.html"><i class="bi bi-file-earmark-text me-2"></i> Quản lý Bài tập</a>
-        <a href="teacher_schedule.html"><i class="bi bi-calendar-event me-2"></i> Lịch giảng dạy</a>
+        <a href="manager_dashboard.html"><i class="bi bi-house me-2"></i> Trang chủ</a>
+        <a href="manager_classes.html" class="active"><i class="bi bi-easel me-2"></i> Quản lý Lớp học</a>
+        <a href="manager_students.html"><i class="bi bi-people me-2"></i> Quản lý Sinh viên</a>
+        <a href="manager_grades.html"><i class="bi bi-journal-check me-2"></i> Quản lý Điểm số</a>
+        <a href="manager_attendance.html"><i class="bi bi-person-check me-2"></i> Điểm danh</a>
+        <a href="manager_assignments.html"><i class="bi bi-file-earmark-text me-2"></i> Quản lý Bài tập</a>
+        <a href="manager_schedule.html"><i class="bi bi-calendar-event me-2"></i> Lịch giảng dạy</a>
       </nav>
       </div>
   </aside>
@@ -52,96 +43,61 @@
     <div class="container-fluid">
 
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="m-0 fw-bold">Quản lý Lớp học</h2>
-        <a href="#" class="btn btn-primary">
-          <i class="bi bi-plus-circle me-2"></i> Thêm Lớp học mới
+        <h3 class="fw-bold text-primary">Quản lý Lớp học</h3>
+        <a href="add_Class.html" class="btn btn-primary">
+          <i class="bi bi-plus-circle me-2"></i> Thêm Lớp học
         </a>
       </div>
 
-      <div class="card-panel mb-3">
+      <div class="card p-3 mb-3 shadow-sm border-0">
         <div class="row g-3 align-items-center">
           <div class="col-md-4">
-            <label for="searchClass" class="form-label fw-semibold">Tìm kiếm</label>
-            <input type="text" class="form-control" id="searchClass" placeholder="Nhập tên lớp, mã lớp, giáo viên...">
+            <div class="input-group">
+                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control border-start-0" id="searchClass" placeholder="Tìm mã lớp, tên môn...">
+            </div>
           </div>
           <div class="col-md-3">
-            <label for="filterCourse" class="form-label fw-semibold">Lọc theo Khóa</label>
-            <select id="filterCourse" class="form-select">
-              <option value="all" selected>Tất cả các Khóa</option>
-              <option value="K2024">Khóa 2024 (K24)</option>
-              <option value="K2023">Khóa 2023 (K23)</option>
-              <option value="K2022">Khóa 2022 (K22)</option>
-              <option value="K2021">Khóa 2021 (K21)</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <label for="filterSubject" class="form-label fw-semibold">Lọc theo Môn học</label>
-            <select id="filterSubject" class="form-select">
-              <option value="all" selected>Tất cả Môn học</option>
-              <option value="web">Phát triển ứng dụng Web</option>
-              <option value="math">Toán rời rạc</option>
-              <option value="db">Cơ sở dữ liệu</option>
-            </select>
-          </div>
-          <div class="col-md-2 d-flex align-items-end">
-            <button class="btn btn-primary w-100">
-              <i class="bi bi-search me-2"></i> Lọc
-            </button>
+             <select class="form-select">
+                 <option>Tất cả học kỳ</option>
+                 <option>HK1 2024-2025</option>
+             </select>
           </div>
         </div>
       </div>
       
-      <div class="card-panel">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-            <h5 class="mb-0">Danh sách Lớp học</h5>
-            <span class="text-muted tiny" id="class-count">Đang tải...</span>
+      <div class="card shadow-sm border-0 p-0">
+        <div class="card-header bg-white py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="mb-0 fw-bold">Danh sách Lớp học</h6>
+                <span class="badge bg-secondary" id="class-count">Đang tải...</span>
+            </div>
         </div>
-
-        <div class="table-wrapper">
-          <table class="table table-hover align-middle">
-            <thead>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
               <tr>
                 <th>Mã Lớp</th>
                 <th>Tên Môn học</th>
-                <th>Giáo viên</th>
+                <th>Giảng viên</th>
                 <th>Học kỳ</th>
                 <th>Sĩ số</th>
                 <th>Trạng thái</th>
-                <th class="no-wrap">Hành động</th>
+                <th class="text-center">Hành động</th>
               </tr>
             </thead>
             <tbody id="class-list-tbody">
-                <tr>
-                    <td colspan="7" class="text-center p-5">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <div>Đang tải danh sách lớp học...</div>
-                    </td>
-                </tr>
+                <tr><td colspan="7" class="text-center py-4">Đang tải danh sách...</td></tr>
             </tbody>
           </table>
         </div>
-
-        <nav aria-label="Page navigation" class="mt-3 d-flex justify-content-end">
-          <ul class="pagination mb-0">
-            <li class="page-item disabled"><a class="page-link" href="#">Trước</a></li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">...</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item"><a class="page-link" href="#">Sau</a></li>
-          </ul>
-        </nav>
       </div>
 
     </div>
   </main>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/script.js"></script>
 <script src="js/manager_classes.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
 </body>
 </html>

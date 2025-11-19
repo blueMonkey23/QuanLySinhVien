@@ -6,31 +6,34 @@ $input = json_decode(file_get_contents('php://input'), true);
 $data = $input['data'] ?? null;
 
 try {
-    // Check email trùng
+    // Kiểm tra trùng email
     $chk = $pdo->prepare("SELECT id FROM users WHERE email = ?");
     $chk->execute([$data['email']]);
-    if ($chk->fetch()) throw new Exception("Email đã tồn tại");
+    if ($chk->fetch()) {
+        echo json_encode(['success' => false, 'message' => 'Email này đã được sử dụng']);
+        exit;
+    }
 
     $pdo->beginTransaction();
 
-    // Tạo User
+    // 1. Tạo User
     $passHash = password_hash($data['password'], PASSWORD_DEFAULT);
     $stmtUser = $pdo->prepare("INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)");
     $stmtUser->execute([$data['name'], $data['email'], $passHash]);
     $userId = $pdo->lastInsertId();
 
-    // Gán Role Student
+    // 2. Gán quyền Student (id=4 trong db mẫu của bạn)
     $pdo->prepare("INSERT INTO role_user (user_id, role_id) VALUES (?, 4)")->execute([$userId]);
 
-    // Tạo Student
+    // 3. Tạo thông tin sinh viên
     $stmtStd = $pdo->prepare("INSERT INTO students (user_id, student_code, name, status) VALUES (?, ?, ?, 1)");
     $stmtStd->execute([$userId, $data['student_id'], $data['name']]);
 
     $pdo->commit();
-    echo json_encode(['success' => true, 'message' => 'Đăng ký thành công']);
+    echo json_encode(['success' => true, 'message' => 'Đăng ký thành công!']);
 
 } catch (Exception $e) {
     if ($pdo->inTransaction()) $pdo->rollBack();
-    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => 'Lỗi: ' . $e->getMessage()]);
 }
 ?>

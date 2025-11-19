@@ -1,16 +1,19 @@
-// Nếu thư mục trong C:\laragon\www là "quanlysinhvien" thì URL dưới là đúng
-const API_BASE = 'http://localhost:8080/backend'; 
+// js/manager_students.js
+const API_STUDENT_URL = 'http://localhost:8080/backend/students.php';
+const API_SCHEDULE_URL = 'http://localhost:8080/backend/get_student_classes.php';
 
 document.addEventListener('DOMContentLoaded', () => {
     loadStudents();
 });
 
+// 1. Load danh sách
 async function loadStudents() {
     const keyword = document.getElementById('searchStudent').value;
     const tbody = document.getElementById('student-list-tbody');
-    
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center">Đang tải...</td></tr>';
+
     try {
-        const res = await fetch(`${API_BASE}/students.php?action=list&keyword=${keyword}`);
+        const res = await fetch(`${API_STUDENT_URL}?action=list&keyword=${keyword}`);
         const json = await res.json();
         
         tbody.innerHTML = '';
@@ -27,8 +30,8 @@ async function loadStudents() {
                         <td>${std.email || ''}</td>
                         <td>${std.dob || ''}</td>
                         <td>${statusHtml}</td>
-                        <td>
-                            <button class="btn btn-sm btn-info text-white" onclick="viewSchedule(${std.id})"><i class="bi bi-calendar3"></i></button>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-info text-white" onclick="viewSchedule(${std.id})" title="Xem Lịch"><i class="bi bi-calendar3"></i></button>
                             <button class="btn btn-sm btn-warning" onclick="editStudent(${std.id}, '${std.student_code}', '${std.fullname}', '${std.email}', '${std.dob}', '${std.gender}', '${std.address}')"><i class="bi bi-pencil"></i></button>
                             <button class="btn btn-sm btn-secondary" onclick="toggleLock(${std.id})"><i class="bi bi-lock"></i></button>
                         </td>
@@ -40,31 +43,34 @@ async function loadStudents() {
         }
     } catch (err) {
         console.error(err);
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Lỗi kết nối API</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Lỗi API</td></tr>';
     }
 }
 
-async function viewSchedule(studentId) {
+// 2. Xem lịch học
+async function viewSchedule(id) {
     const tbody = document.getElementById('schedule-tbody');
-    document.getElementById('scheduleStudentName').innerText = '...';
+    document.getElementById('scheduleStudentName').textContent = '...';
     document.getElementById('no-class-msg').classList.add('d-none');
+    
     new bootstrap.Modal(document.getElementById('scheduleModal')).show();
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center">Đang tải...</td></tr>';
 
     try {
-        const res = await fetch(`${API_BASE}/get_student_classes.php?id=${studentId}`);
+        const res = await fetch(`${API_SCHEDULE_URL}?id=${id}`);
         const data = await res.json();
-
-        if (data.success) {
-            document.getElementById('scheduleStudentName').innerText = data.student.name;
+        
+        if(data.success) {
+            document.getElementById('scheduleStudentName').textContent = data.student.name;
             tbody.innerHTML = '';
-            if (data.classes.length > 0) {
+            if(data.classes.length > 0) {
                 data.classes.forEach(cls => {
                     const diem = (cls.midterm_score||'-') + ' / ' + (cls.final_score||'-');
                     tbody.innerHTML += `
                         <tr>
                             <td class="fw-bold">${cls.class_code}</td>
                             <td>${cls.subject_name}</td>
-                            <td>${cls.teacher_name || ''}</td>
+                            <td>${cls.teacher_name}</td>
                             <td>${cls.day_text}<br>${cls.time_text}</td>
                             <td>${cls.room}</td>
                             <td class="text-center fw-bold">${diem}</td>
@@ -72,11 +78,13 @@ async function viewSchedule(studentId) {
                 });
             } else {
                 document.getElementById('no-class-msg').classList.remove('d-none');
+                tbody.innerHTML = '';
             }
         }
-    } catch (error) { console.error(error); }
+    } catch(e) { console.error(e); }
 }
 
+// 3. Các hàm Modal & Save
 function openModal() {
     document.getElementById('studentForm').reset();
     document.getElementById('studentId').value = '';
@@ -109,16 +117,16 @@ async function saveStudent() {
         gender: document.getElementById('gender').value,
         address: document.getElementById('address').value
     };
-    await fetch(`${API_BASE}/students.php?action=${id?'update':'create'}`, {
+    await fetch(`${API_STUDENT_URL}?action=${id?'update':'create'}`, {
         method: 'POST',
         body: JSON.stringify(data)
     });
-    location.reload(); // Reload trang cho nhanh
+    location.reload();
 }
 
 async function toggleLock(id) {
     if(confirm('Đổi trạng thái?')) {
-        await fetch(`${API_BASE}/students.php?action=toggle_lock`, {
+        await fetch(`${API_STUDENT_URL}?action=toggle_lock`, {
             method: 'POST',
             body: JSON.stringify({id: id})
         });

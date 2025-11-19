@@ -1,76 +1,15 @@
-<<<<<<< Updated upstream
-document.addEventListener('DOMContentLoaded', function() {
-    const authButtons = document.getElementById('authButtons');
-    const API_STATUS_URL = 'http://localhost/backend/status.php';
-    const API_LOGOUT_URL = 'http://localhost/backend/logout.php';
-=======
-//js/script.js
-document.addEventListener('DOMContentLoaded', function() {
-    const authButtons = document.getElementById('authButtons');
-    const API_STATUS_URL = 'http://localhost:8080/backend/status.php'; 
-    const API_LOGOUT_URL = 'http://localhost:8080/backend/logout.php';
->>>>>>> Stashed changes
-    function updateAuthUI(currentUser) {
-        if (currentUser) {
-            authButtons.innerHTML = `
-                <ul class="navbar-nav ms-auto mb-2 mb-md-0">
-                  <li class="nav-item dropdown ">
-                        <a class="nav-link dropdown-toggle text-dark d-flex text-white align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-person fs-4"></i>
-                            
-                            <div class="ms-2 d-none d-sm-block">
-                                <span class="d-block text-white" style="font-size: 0.9em; line-height: 1.2;">${currentUser.fullname}</span>
-                                <span class="d-block small text-white" style="line-height: 1.2;">${currentUser.studentId}</span>
-                            </div>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><span class="dropdown-item-text">Xin chào, ${currentUser.fullname}</span></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-header-hover" href="#" id="logoutLink">Đăng xuất</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                `;
-            const newDropdownToggle = authButtons.querySelector('[data-bs-toggle="dropdown"]');
-            if (newDropdownToggle) {
-                new bootstrap.Dropdown(newDropdownToggle);
-            }
-        } else {
-            authButtons.innerHTML = `
-                <button class="btn me-2 text-white" id="btnLogin">Đăng nhập</button>
-                <button class="btn btn-secondary fw-bold" id="btnRegister">Đăng ký</button>
-            `;
-        }
-    }
-    if (authButtons) {
-        authButtons.addEventListener('click', function(event) {
-            const targetId = event.target.id;
-            if (targetId === 'logoutLink') {
-                event.preventDefault(); 
-                fetch(API_LOGOUT_URL, { method: 'POST' })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('Đăng xuất thành công!');
-                            updateAuthUI(null);
-                        } else {
-                            alert('Lỗi đăng xuất: ' + data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Lỗi fetch đăng xuất:', error);
-                        alert('Lỗi kết nối khi đăng xuất.');
-                    });
-            }
-            if (targetId === 'btnLogin') {
-                window.location.href = 'login.html';
-            }
-            if (targetId === 'btnRegister') {
-                window.location.href = 'register.html';
-            }
-        });
-    }
+// js/script.js
 
+// --- CẤU HÌNH ĐƯỜNG DẪN GỐC ---
+// Nếu thư mục dự án trong C:/laragon/www là "quanlysinhvien" thì URL này ĐÚNG.
+const API_BASE_URL = 'http://localhost:8080/backend';
+
+document.addEventListener('DOMContentLoaded', function() {
+    const authButtons = document.getElementById('authButtons');
+    const API_STATUS_URL = `${API_BASE_URL}/status.php`; 
+    const API_LOGOUT_URL = `${API_BASE_URL}/logout.php`; 
+
+    // 1. Kiểm tra trạng thái đăng nhập
     fetch(API_STATUS_URL)
         .then(response => response.json())
         .then(data => {
@@ -78,25 +17,72 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateAuthUI(data.data);
             } else {
                 updateAuthUI(null);
+                // Nếu không phải trang login/register thì đá về login
+                const page = window.location.pathname.split('/').pop();
+                if (page !== 'login.html' && page !== 'register.html') {
+                    window.location.href = 'login.html';
+                }
             }
         })
-        .catch(error => {
-            console.error('Lỗi khi kiểm tra trạng thái đăng nhập:', error);
-            updateAuthUI(null);
+        .catch(error => console.error('Lỗi Auth:', error));
+
+    // 2. Cập nhật giao diện User
+    function updateAuthUI(user) {
+        if (user) {
+            authButtons.innerHTML = `
+                <div class="dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle me-1"></i> ${user.fullname}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><span class="dropdown-item-text text-muted">${user.identifier || user.role}</span></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" id="logoutBtn">Đăng xuất</a></li>
+                    </ul>
+                </div>
+            `;
+            
+            // Gắn sự kiện Logout
+            document.getElementById('logoutBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                fetch(API_LOGOUT_URL).then(() => window.location.href = 'login.html');
+            });
+        } else {
+            authButtons.innerHTML = '';
+        }
+    }
+
+    // 3. Active Sidebar tự động
+    const path = window.location.pathname;
+    const page = path.split("/").pop(); 
+    const menuMap = {
+        'manager_dashboard.html': 'link-dashboard',
+        'manager_classes.html': 'link-classes',
+        'manager_class_detail.html': 'link-classes',
+        'add_Class.html': 'link-add-class',
+        'manager_students.html': 'link-students'
+    };
+    const activeId = menuMap[page];
+    if (activeId) {
+        const link = document.getElementById(activeId);
+        if (link) link.classList.add('active'); // Cần CSS .active
+    }
+
+    // 4. Toggle Sidebar Mobile
+    const toggleBtn = document.getElementById("toggle-btn");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+    
+    if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("active");
+            if(overlay) overlay.classList.toggle("active");
         });
+        if(overlay) {
+            overlay.addEventListener("click", () => {
+                sidebar.classList.remove("active");
+                overlay.classList.remove("active");
+            });
+        }
+    }
 });
-const toggleBtn = document.getElementById("toggle-btn");
-const sidebar = document.getElementById("sidebar");
-const overlay = document.getElementById("overlay");
-
-if (toggleBtn && sidebar && overlay) {
-    toggleBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("active");
-        overlay.classList.toggle("active");
-    });
-
-    overlay.addEventListener("click", () => {
-        sidebar.classList.remove("active");
-        overlay.classList.remove("active");
-    });
-}
