@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:8080/backend'; 
+const API_BASE = `${CONFIG.API_BASE_URL}`; 
 
 document.addEventListener('DOMContentLoaded', () => {
     loadStudents();

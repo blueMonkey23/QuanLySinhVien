@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('login_form');
     const email = document.getElementById('email');
     const password = document.getElementById('password');
-    const API_URL = `${CONFIG.API_BASE_URL}login.php`;
+    const API_URL = `${CONFIG.API_BASE_URL}/login.php`;
     //Gắn sự kiện "submit" cho form
     form.addEventListener('submit', function(event) {
         // Ngăn form tải lại trang
