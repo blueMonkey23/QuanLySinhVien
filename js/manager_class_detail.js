@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     
     // Định nghĩa API
-    const API_URL_DETAIL = 'backend/manager_class_detail.php';
-    const API_URL_UPDATE_GRADES = 'backend/manager_update_grades.php';
-    const API_URL_ENROLLMENT = 'backend/manager_enroll_student.php';
+    const API_URL_DETAIL = `${CONFIG.API_BASE_URL}/manager_class_detail.php`;
+    const API_URL_UPDATE_GRADES = `${CONFIG.API_BASE_URL}/manager_update_grades.php`;
+    const API_URL_ENROLLMENT = `${CONFIG.API_BASE_URL}/manager_enroll_student.php`;
 
     // Lấy ID lớp từ URL
     const params = new URLSearchParams(window.location.search);

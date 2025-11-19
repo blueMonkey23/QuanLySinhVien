@@ -1,8 +1,8 @@
 // Tệp: js/add_class.js
 
 // SỬA ĐƯỜNG DẪN: Sử dụng đường dẫn tương đối để an toàn hơn
-const API_ADD_CLASS = 'backend/manager_class_add.php';
-const API_FETCH_DATA = 'backend/class_data_fetch.php';
+const API_ADD_CLASS = `${CONFIG.API_BASE_URL}/manager_class_add.php`;
+const API_FETCH_DATA = `${CONFIG.API_BASE_URL}/class_data_fetch.php`;
 
 document.addEventListener('DOMContentLoaded', function() 
 {

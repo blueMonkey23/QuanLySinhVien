@@ -1,8 +1,8 @@
 // Thay thế toàn bộ nội dung tệp script.js của bạn
 document.addEventListener('DOMContentLoaded', function() {
     const authButtons = document.getElementById('authButtons');
-    const API_STATUS_URL = 'http://localhost/backend/status.php'; 
-    const API_LOGOUT_URL = 'http://localhost/backend/logout.php'; 
+    const API_STATUS_URL = `${CONFIG.API_BASE_URL}/status.php`; 
+    const API_LOGOUT_URL = `${CONFIG.API_BASE_URL}/logout.php`; 
 
     function updateAuthUI(currentUser) {
         if (currentUser) {
